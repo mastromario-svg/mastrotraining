@@ -15,8 +15,10 @@ export default function ConnectStravaClient() {
 
   useEffect(() => {
     if (code && uid) {
+      // Scambio il code con il token di Strava
       exchangeCode(code, uid);
     } else if (!code && uid) {
+      // Primo caricamento - mostra il pulsante per autorizzare
       setStatus('waiting');
     }
   }, [code, uid]);
@@ -35,6 +37,7 @@ export default function ConnectStravaClient() {
 
       const data = await response.json();
 
+      // Aggiorna Firestore con il token Strava
       if (userId) {
         await updateDoc(doc(db, 'users', userId), {
           stravaAccessToken: data.access_token,
